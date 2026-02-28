@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   packer:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, Windows, X64]
     timeout-minutes: 120
     env:
       # Proxmox Variables
