@@ -30,7 +30,7 @@ jobs:
       # Deploy User Variables
       PKR_VAR_deploy_user_name:     ${{ secrets.DEPLOY_USER_NAME }}
       PKR_VAR_deploy_user_password: ${{ secrets.DEPLOY_USER_PASSWORD }}
-      PKR_VAR_deploy_user_key:      ${{ secrets.DEPLOY_USER_PUBLIC_KEY }}
+      PKR_VAR_deploy_user_key:      ${{ secrets.DEPLOY_USER_KEY }}
 
     steps:
       - name: Checkout GitHub Repository
@@ -77,13 +77,15 @@ jobs:
             exit 1
           fi
 
+          echo "Using Packer executable: ${packer_command}"
+
       - name: Copy 'systems.auto.pkrvars.hcl' into Packer Framework Folder
         shell: bash
         working-directory: ${{ github.workspace }}
         run: |
           set -euo pipefail
 
-          source_file="${GITHUB_WORKSPACE}/${GITHUB_REPOSITORY##*/}/systems.auto.pkrvars.hcl"
+          source_file="${GITHUB_WORKSPACE}/secure-rockylinux9-template/systems.auto.pkrvars.hcl"
           destination_dir="${GITHUB_WORKSPACE}/proxmox-packer-framework"
 
           if [[ ! -f "${source_file}" ]]; then
@@ -97,3 +99,31 @@ jobs:
           fi
 
           cp -f "${source_file}" "${destination_dir}/"
+
+      - name: test
+        shell: bash
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        run: |
+          set -euo pipefail
+          packer init -upgrade .
+
+      - name: Packer fmt
+        shell: bash
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        run: |
+          set -euo pipefail
+          packer fmt -check -diff .
+
+      - name: Packer validate
+        shell: bash
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        run: |
+          set -euo pipefail
+          packer validate .
+
+      - name: Packer build
+        shell: bash
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        run: |
+          set -euo pipefail
+          packer build -timestamp-ui -color=false -on-error=cleanup .
