@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   packer:
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 120
     env:
       # Proxmox Variables
@@ -49,10 +49,51 @@ jobs:
           ref: main
           repository: NWarila/Proxmox-Packer-Framework
 
-      - name: Run Linux composite action
-        if: ${{ runner.os == 'Linux' }}
-        uses: ./.github/actions/proxmox-packer-linux
+      - name: Perform Prerequisites Validation
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
 
-      - name: Run Windows composite action
-        if: ${{ runner.os == 'Windows' }}
-        uses: ./.github/actions/proxmox-packer-powershell
+          required_variables=(
+            "PKR_VAR_proxmox_hostname"
+            "PKR_VAR_proxmox_api_token_id"
+            "PKR_VAR_proxmox_api_token_secret"
+            "PKR_VAR_deploy_user_name"
+            "PKR_VAR_deploy_user_password"
+            "PKR_VAR_deploy_user_key"
+          )
+
+          for variable_name in "${required_variables[@]}"; do
+            variable_value="${!variable_name:-}"
+            if [[ -z "${variable_value//[[:space:]]/}" ]]; then
+              echo "Required environment variable is not set: ${variable_name}" >&2
+              exit 1
+            fi
+          done
+
+          if ! packer_command="$(command -v packer)"; then
+            echo "Required executable not found: packer" >&2
+            exit 1
+          fi
+
+      - name: Copy 'systems.auto.pkrvars.hcl' into Packer Framework Folder
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+
+          source_file="${GITHUB_WORKSPACE}/${GITHUB_REPOSITORY##*/}/systems.auto.pkrvars.hcl"
+          destination_dir="${GITHUB_WORKSPACE}/proxmox-packer-framework"
+
+          if [[ ! -f "${source_file}" ]]; then
+            echo "Required file not found: ${source_file}" >&2
+            exit 1
+          fi
+
+          if [[ ! -d "${destination_dir}" ]]; then
+            echo "Packer working directory not found: ${destination_dir}" >&2
+            exit 1
+          fi
+
+          cp -f "${source_file}" "${destination_dir}/"
