@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   packer:
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: [self-hosted, X64]
     timeout-minutes: 120
     env:
       # Proxmox Variables
@@ -49,24 +49,10 @@ jobs:
           ref: main
           repository: NWarila/Proxmox-Packer-Framework
 
-      - name: Copy 'systems.auto.pkrvars' to Packer Framework repo
-        shell: bash
-        run: |
-          cp "${{ github.event.repository.name }}/systems.auto.pkrvars.hcl" \
-            "proxmox-packer-framework/packer/systems.auto.pkrvars.hcl"
+      - name: Run Linux composite action
+        if: ${{ runner.os == 'Linux' }}
+        uses: ./.github/actions/proxmox-packer-linux
 
-      - name: Packer init (install required_plugins)
-        working-directory: proxmox-packer-framework/packer
-        run: /usr/bin/packer init -upgrade .
-
-      - name: Packer Format
-        working-directory: proxmox-packer-framework/packer
-        run: packer fmt -check -diff .
-
-      - name: Packer Validate
-        working-directory: proxmox-packer-framework/packer
-        run: /usr/bin/packer validate .
-
-      - name: Packer build
-        working-directory: proxmox-packer-framework/packer
-        run: /usr/bin/packer build -timestamp-ui -color=false -on-error=cleanup .
+      - name: Run Windows composite action
+        if: ${{ runner.os == 'Windows' }}
+        uses: ./.github/actions/proxmox-packer-powershell
