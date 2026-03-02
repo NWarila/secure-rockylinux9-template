@@ -85,7 +85,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          source_file="${GITHUB_WORKSPACE}/${GITHUB_REPOSITORY##*/}/systems.auto.pkrvars.hcl"
+          source_file="${GITHUB_WORKSPACE}/${GITHUB_REPOSITORY##*/}/packer/systems.auto.pkrvars.hcl"
           destination_dir="${GITHUB_WORKSPACE}/proxmox-packer-framework"
 
           if [[ ! -f "${source_file}" ]]; then
@@ -102,28 +102,28 @@ jobs:
 
       - name: test
         shell: bash
-        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework/packer
         run: |
           set -euo pipefail
           /usr/bin/packer init -upgrade .
 
       - name: Packer fmt
         shell: bash
-        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework/packer
         run: |
           set -euo pipefail
           /usr/bin/packer fmt -check -diff .
 
       - name: Packer validate
         shell: bash
-        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework/packer
         run: |
           set -euo pipefail
           /usr/bin/packer validate .
 
       - name: Packer build
         shell: bash
-        working-directory: ${{ github.workspace }}/proxmox-packer-framework
+        working-directory: ${{ github.workspace }}/proxmox-packer-framework/packer
         run: |
           set -euo pipefail
           /usr/bin/packer build -timestamp-ui -color=false -on-error=cleanup .
