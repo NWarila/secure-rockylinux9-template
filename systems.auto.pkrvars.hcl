@@ -6,47 +6,47 @@
 packer_image = {
 
   # Proxmox Settings
-  insecure_skip_tls_verify  = true
+  insecure_skip_tls_verify = true
 
   # OS Installation & Configuration
-  install_method            = "kickstart"
-  additional_packages       = ["python3-dnf"]
+  install_method      = "kickstart"
+  additional_packages = ["python3-dnf"]
 
   # Template Metadata
-  os_language               = "en_US"
-  os_keyboard               = "us"
-  os_timezone               = "UTC"
-  os_family                 = "linux"
-  os_name                   = "rocky"
-  os_version                = "9"
+  os_language = "en_US"
+  os_keyboard = "us"
+  os_timezone = "UTC"
+  os_family   = "linux"
+  os_name     = "rocky"
+  os_version  = "9"
 
   # General Settings
-  template_description      = "Rocky Linux 9 Template built with Packer"
-  template_name             = "rocky-linux-9-template"
-  vm_id                     = 9000
-  pool                      = "tmpl-golden-pkr"
-  node                      = "tcnhq-prxmx01"
-  vm_name                   = "rocky-linux-9-template"
-  tags                      = ["rocky", "linux", "template", "packer"]
+  template_description = "Rocky Linux 9 Template built with Packer"
+  template_name        = "rocky-linux-9-template"
+  vm_id                = 9000
+  pool                 = "tmpl-golden-pkr"
+  node                 = "tcnhq-prxmx01"
+  vm_name              = "rocky-linux-9-template"
+  tags                 = ["rocky", "linux", "template", "packer"]
 
   # QEMU Agent
-  qemu_agent                = true
-  qemu_additional_args      = ""
+  qemu_agent           = true
+  qemu_additional_args = ""
 
   # Misc Settings
-  disable_kvm               = false
-  machine                   = "q35"
-  os                        = "l26"
-  task_timeout              = "10m"
+  disable_kvm  = false
+  machine      = "q35"
+  os           = "l26"
+  task_timeout = "10m"
 
   # VM Configuration: Boot Settings
-  bios                      = "ovmf"
-  boot                      = "order=scsi2;scsi0;scsi1;"
-  boot_key_interval         = null
-  boot_keygroup_interval    = null
-  boot_wait                 = "10s"
-  onboot                    = false
-  boot_command              = [
+  bios                   = "ovmf"
+  boot                   = "order=scsi2;scsi0;scsi1;"
+  boot_key_interval      = null
+  boot_keygroup_interval = null
+  boot_wait              = "10s"
+  onboot                 = false
+  boot_command = [
     // This sends the "up arrow" key, typically used to navigate through boot menu options.
     "<up>",
     // This sends the "e" key. In the GRUB boot loader, this is used to edit the selected boot menu option.
@@ -61,24 +61,24 @@ packer_image = {
   ]
 
   # VM Configuration: Cloud-Init
-  cloud_init                = true
-  cloud_init_disk_type      = "scsi"
-  cloud_init_storage_pool   = "nvme-pool"
+  cloud_init              = true
+  cloud_init_disk_type    = "scsi"
+  cloud_init_storage_pool = "nvme-pool"
 
   # Hardware: CPU
-  cores                     = 2
-  cpu_type                  = "host"
-  sockets                   = 1
+  cores    = 2
+  cpu_type = "host"
+  sockets  = 1
 
   # Hardware: Memory
-  ballooning_minimum        = 0
-  memory                    = 4096
-  numa                      = false
+  ballooning_minimum = 0
+  memory             = 4096
+  numa               = false
 
   # Hardware: Misc
-  scsi_controller           = "virtio-scsi-single"
-  serials                   = []
-  vm_interface              = null
+  scsi_controller = "virtio-scsi-single"
+  serials         = []
+  vm_interface    = null
 
 }
 
@@ -123,10 +123,10 @@ efi_config = {
 
 network_adapters = [
   {
-    ipv4_address = "10.69.128.200"
-    ipv4_netmask = 24
-    ipv4_gateway = "10.69.128.1"
-    dns          = ["10.69.128.1"]
+    ipv4_address  = "10.69.128.200"
+    ipv4_netmask  = 24
+    ipv4_gateway  = "10.69.128.1"
+    dns           = ["10.69.128.1"]
     bridge        = "vmbr0"
     firewall      = false
     mac_address   = null
@@ -157,7 +157,7 @@ vga = {
 
 #region ------ [ Disks & Partitions ] --------------------------------------------------------- #
 
-vm_disk_use_swap   = true
+vm_disk_use_swap = true
 vm_disk_partitions = [
   {
     name = "efi"
@@ -201,8 +201,8 @@ vm_disk_partitions = [
 ]
 vm_disk_lvm = [
   {
-    name: "sysvg",
-    partitions: [
+    name = "sysvg",
+    partitions = [
       {
         name = "lv_swap",
         size = 1024,
@@ -315,6 +315,4 @@ vm_disk_lvm = [
   }
 ]
 
-
 #endregion --- [ Disks & Partitions ] --------------------------------------------------------- #
-
