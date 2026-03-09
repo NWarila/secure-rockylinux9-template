@@ -1,0 +1,52 @@
+name: Feature Request
+description: Suggest a new feature or enhancement.
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+assignees:
+  - NWarila
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature you'd like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other approaches have you considered?
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      description: Which area of the project does this affect?
+      options:
+        - Packer configuration
+        - Kickstart / OS hardening
+        - Ansible provisioning
+        - CI/CD workflows
+        - Pre-commit hooks
+        - Developer tooling
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context or screenshots.

@@ -1,0 +1,42 @@
+# ============================================================================================= #
+# EditorConfig: Cross-editor consistency for coding styles                                     #
+# Documentation: https://editorconfig.org                                                      #
+# ============================================================================================= #
+
+root = true
+
+# ----- [ Universal Defaults ] --------------------------------------------------------------- #
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+max_line_length = 98
+trim_trailing_whitespace = true
+
+# ----- [ Markdown ] ------------------------------------------------------------------------- #
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
+# ----- [ Shell Scripts ] -------------------------------------------------------------------- #
+[*.{sh,bash}]
+shell_variant = bash
+
+# ----- [ Makefiles ] ----------------------------------------------------------------------- #
+[Makefile]
+indent_style = tab
+tab_width = 4
+
+# ----- [ YAML ] ---------------------------------------------------------------------------- #
+[*.{yml,yaml}]
+indent_size = 2
+
+# ----- [ HCL / Packer ] -------------------------------------------------------------------- #
+[*.{hcl,pkr.hcl,pkrvars.hcl,pkrtpl.hcl}]
+indent_size = 2
+
+# ----- [ JSON ] ---------------------------------------------------------------------------- #
+[*.json]
+indent_size = 2

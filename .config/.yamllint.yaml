@@ -1,0 +1,89 @@
+# ============================================================================================= #
+# yamllint Configuration                                                                       #
+# Documentation: https://yamllint.readthedocs.io                                               #
+# ============================================================================================= #
+
+extends: default
+
+yaml-files:
+  - "*.yaml"
+  - "*.yml"
+  - ".yamllint"
+
+ignore:
+  - ".git/"
+
+rules:
+  # --- [ Correctness ] --------------------------------------------------------------------- #
+  anchors:
+    forbid-duplicated-anchors: true
+    forbid-undeclared-aliases: true
+
+  key-duplicates:
+    forbid-duplicated-merge-keys: true
+
+  empty-values:
+    forbid-in-block-mappings: true
+    forbid-in-block-sequences: false
+    forbid-in-flow-mappings: true
+
+  octal-values:
+    forbid-explicit-octal: true
+    forbid-implicit-octal: true
+
+  truthy:
+    level: error
+    allowed-values: ["true", "false"]
+    check-keys: false
+
+  # --- [ Formatting ] ---------------------------------------------------------------------- #
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+
+  line-length:
+    max: 120
+    allow-non-breakable-inline-mappings: true
+    allow-non-breakable-words: true
+
+  comments:
+    require-starting-space: true
+    min-spaces-from-content: 1
+    ignore-shebangs: true
+
+  comments-indentation:
+    level: warning
+
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  colons:
+    max-spaces-after: 1
+
+  commas:
+    min-spaces-after: 1
+    max-spaces-after: 1
+    max-spaces-before: 0
+
+  hyphens:
+    max-spaces-after: 1
+
+  empty-lines:
+    max: 1
+    max-start: 0
+    max-end: 0
+
+  new-line-at-end-of-file: enable
+  new-lines:
+    type: unix
+
+  trailing-spaces: enable

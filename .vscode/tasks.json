@@ -1,0 +1,88 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    //region ------ [ Packer Core ] ---------------------------------------- #
+    {
+      "label": "Packer: Format",
+      "type": "shell",
+      "command": "packer fmt -diff .",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Packer: Format Check",
+      "type": "shell",
+      "command": "packer fmt -check -diff .",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Packer: Init",
+      "type": "shell",
+      "command": "packer init -upgrade .",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Packer: Validate",
+      "type": "shell",
+      "command": "packer validate .",
+      "group": "build",
+      "problemMatcher": []
+    },
+    //endregion --- [ Packer Core ] ---------------------------------------- #
+
+    //region ------ [ Linting & Security ] --------------------------------- #
+    {
+      "label": "YAML Lint",
+      "type": "shell",
+      "command": "yamllint -c .config/.yamllint.yaml .",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Markdown Lint",
+      "type": "shell",
+      "command": "markdownlint --config .config/.markdownlint.json '**/*.md'",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Trivy: Security Scan",
+      "type": "shell",
+      "command": "trivy config --severity HIGH,CRITICAL .",
+      "group": "test",
+      "problemMatcher": []
+    },
+    //endregion --- [ Linting & Security ] --------------------------------- #
+
+    //region ------ [ Pre-Commit ] ----------------------------------------- #
+    {
+      "label": "Pre-Commit: Run All",
+      "type": "shell",
+      "command": "pre-commit run --all-files",
+      "group": "test",
+      "problemMatcher": []
+    },
+    //endregion --- [ Pre-Commit ] ----------------------------------------- #
+
+    //region ------ [ Composite ] ------------------------------------------ #
+    {
+      "label": "Full Validation",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Packer: Format Check",
+        "Packer: Init",
+        "Packer: Validate",
+        "YAML Lint",
+        "Markdown Lint"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+    //endregion --- [ Composite ] ------------------------------------------ #
+  ]
+}

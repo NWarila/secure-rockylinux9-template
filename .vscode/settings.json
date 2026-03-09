@@ -4,10 +4,14 @@
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "editor.autoIndent": "advanced",
+  "editor.renderWhitespace": "all",
   "editor.rulers": [
-    { "color": "#9a4dff", "column": 98 },
     { "color": "#5e4e72", "column": 96 },
+    { "color": "#9a4dff", "column": 98 }
   ],
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
 
   //endregion --- [ VSCode Native Settings ] ------------------------------- #
 
@@ -16,14 +20,14 @@
     //region ------ [ Extensions: Explicit Folding ] ----------------------- #
 
     "explicitFolding.rules": {
-        "*": {
-            "beginRegex": "^[\\s]*#region ------ \\[.*\\] -+ #[\\s]*$",
-            "endRegex":   "^[\\s]*#endregion --- \\[.*\\] -+ #[\\s]*$"
-        }
+      "*": {
+        "beginRegex": "^[\\s]*#region ------ \\[.*\\] -+ #[\\s]*$",
+        "endRegex":   "^[\\s]*#endregion --- \\[.*\\] -+ #[\\s]*$"
+      }
     },
 
-    //endregion --- [ Extensions: Explicit Folding ] ------------------------- #
+    //endregion --- [ Extensions: Explicit Folding ] ----------------------- #
 
-  //endregion --- [ Extenions ] ---------------------------------------------- #
+  //endregion --- [ Extensions ] ------------------------------------------- #
 
 }

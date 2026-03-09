@@ -34,16 +34,48 @@
 !README.md
 !.gitignore
 !.gitattributes
+!.editorconfig
 
-# Include VSCode settings and extensions recommendations.
+# Include community & documentation files.
+!CHANGELOG.md
+!CODE_OF_CONDUCT.md
+!CONTRIBUTING.md
+!SECURITY.md
+!SUPPORT.md
+
+# Include pre-commit configuration.
+!.pre-commit-config.yaml
+
+# Include release automation.
+!release-please-config.json
+!.release-please-manifest.json
+
+# Include linter & tool configurations.
+!.config
+!.config/.markdownlint.json
+!.config/.yamllint.yaml
+
+# Include VSCode settings, extensions, and tasks.
 !.vscode
 !.vscode/extensions.json
 !.vscode/settings.json
+!.vscode/tasks.json
 
-# Include Github Actions workflows.
+# Include GitHub configuration.
 !.github
+!.github/CODEOWNERS
+!.github/FUNDING.yml
+!.github/dependabot.yml
+!.github/pull_request_template.md
+!.github/ISSUE_TEMPLATE/
+!.github/ISSUE_TEMPLATE/config.yml
+!.github/ISSUE_TEMPLATE/bug_report.yml
+!.github/ISSUE_TEMPLATE/feature_request.yml
 !.github/workflows/
 !.github/workflows/packer.yml
+!.github/workflows/security.yaml
+!.github/workflows/codeql.yaml
+!.github/workflows/release-please.yaml
 
 # Include Core Terraform files.
 !builds.pkr.hcl

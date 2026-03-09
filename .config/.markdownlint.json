@@ -1,0 +1,36 @@
+{
+  "default": true,
+  "MD003": { "style": "atx" },
+  "MD004": { "style": "dash" },
+  "MD009": { "br_spaces": 2, "strict": true },
+  "MD010": { "spaces_per_tab": 4 },
+  "MD013": {
+    "line_length": 120,
+    "heading_line_length": 100,
+    "code_block_line_length": 120,
+    "code_blocks": false,
+    "tables": false
+  },
+  "MD024": { "siblings_only": true },
+  "MD029": { "style": "one" },
+  "MD033": {
+    "allowed_elements": [
+      "details",
+      "summary",
+      "kbd",
+      "sub",
+      "sup",
+      "picture",
+      "source",
+      "img",
+      "br"
+    ]
+  },
+  "MD035": { "style": "---" },
+  "MD040": true,
+  "MD041": { "level": 1 },
+  "MD046": { "style": "fenced" },
+  "MD048": { "style": "backtick" },
+  "MD049": { "style": "asterisk" },
+  "MD050": { "style": "asterisk" }
+}
