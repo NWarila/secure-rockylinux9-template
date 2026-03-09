@@ -34,14 +34,14 @@ jobs:
 
     steps:
       - name: Checkout GitHub Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           path: ${{ github.event.repository.name }}
           persist-credentials: false
 
       - name: Checkout Packer Framework Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           path: proxmox-packer-framework
