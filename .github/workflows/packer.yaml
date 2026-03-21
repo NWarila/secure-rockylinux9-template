@@ -35,23 +35,23 @@ jobs:
 
     steps:
       - name: Checkout GitHub Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 1
           path: ${{ github.event.repository.name }}
           persist-credentials: false
 
       - name: Checkout Packer Framework Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 1
           path: proxmox-packer-framework
           persist-credentials: false
-          ref: 8bf05ff47c844d56695c9d68353f76b46f27f63a
+          ref: e9924a51acea215fa51db6750ece0a3e6f6f20db
           repository: NWarila/Proxmox-Packer-Framework
 
       - name: Checkout Ansible Framework Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 1
           path: ansible-framework
@@ -162,7 +162,7 @@ jobs:
           /usr/bin/packer build -force -timestamp-ui -color=false -on-error=cleanup . | tee packer-build.log
 
       - name: Upload Packer Build Diagnostics
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: always()
         with:
           name: packer-build-diagnostics
