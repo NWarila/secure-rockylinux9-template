@@ -31,7 +31,7 @@ jobs:
       # Deploy User Variables
       PKR_VAR_deploy_user_name:     ${{ secrets.DEPLOY_USER_NAME }}
       PKR_VAR_deploy_user_password: ${{ secrets.DEPLOY_USER_PASSWORD }}
-      PKR_VAR_deploy_user_key:      ${{ secrets.DEPLOY_USER_PUBLIC_KEY }}
+      PKR_VAR_deploy_user_public_key: ${{ secrets.DEPLOY_USER_PUBLIC_KEY }}
 
     steps:
       - name: Checkout GitHub Repository
@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 1
           path: proxmox-packer-framework
           persist-credentials: false
-          ref: e9924a51acea215fa51db6750ece0a3e6f6f20db
+          ref: 8bf05ff
           repository: NWarila/Proxmox-Packer-Framework
 
       - name: Checkout Ansible Framework Repository
@@ -71,7 +71,7 @@ jobs:
             "PKR_VAR_proxmox_api_token_secret"
             "PKR_VAR_deploy_user_name"
             "PKR_VAR_deploy_user_password"
-            "PKR_VAR_deploy_user_key"
+            "PKR_VAR_deploy_user_public_key"
           )
 
           for variable_name in "${required_variables[@]}"; do
