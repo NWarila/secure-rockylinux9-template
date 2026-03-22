@@ -112,9 +112,16 @@ sshkey --username=${deploy_user_name} "${deploy_user_public_key}"
   # TODO: Move these SSH settings into an sshd_config.d drop-in once the bootstrap flow is ready.
   # Configure the SSH Service To Allow SSH After System Hardening
   sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/'               /etc/ssh/sshd_config
-  grep -q 'Subsystem[[:space:]]\\+sftp' /etc/ssh/sshd_config \
-    && sed -i 's#^[#[:space:]]*Subsystem[[:space:]]\\+sftp.*#Subsystem sftp /usr/libexec/openssh/sftp-server#' /etc/ssh/sshd_config \
-    || echo 'Subsystem sftp /usr/libexec/openssh/sftp-server' | tee -a /etc/ssh/sshd_config
+  # Normalize SFTP subsystem configuration across the main sshd_config and any
+  # included drop-ins so the final effective SSH daemon config always points to
+  # the RHEL/Rocky 9 OpenSSH server path.
+  if [ -d /etc/ssh/sshd_config.d ]; then
+    find /etc/ssh/sshd_config.d -maxdepth 1 -type f -name '*.conf' -exec \
+      sed -i '/^[#[:space:]]*Subsystem[[:space:]]\+sftp[[:space:]].*/d' {} +
+  fi
+  sed -i '/^[#[:space:]]*Subsystem[[:space:]]\+sftp[[:space:]].*/d' /etc/ssh/sshd_config
+  echo 'Subsystem sftp /usr/libexec/openssh/sftp-server' >> /etc/ssh/sshd_config
+  sshd -t
   echo "AllowGroups ssh-users"                                    >> /etc/ssh/sshd_config
 
   # Configure the deploy user
