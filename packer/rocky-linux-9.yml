@@ -11,6 +11,21 @@
   become: true
   gather_facts: false
   pre_tasks:
+    - name: Capture SSH SFTP state before normalization
+      ansible.builtin.raw: |
+        echo '=== BEFORE: subsystem lines ==='
+        grep -Rin '^[#[:space:]]*Subsystem[[:space:]]\+sftp' /etc/ssh 2>/dev/null || true
+        echo '=== BEFORE: sshd -T subsystem ==='
+        sshd -T 2>/dev/null | grep '^subsystem' || true
+        echo '=== BEFORE: sftp binaries ==='
+        ls -l /usr/libexec/openssh/sftp-server /usr/lib/sftp-server 2>&1 || true
+      register: ssh_sftp_state_before
+      changed_when: false
+
+    - name: Print SSH SFTP state before normalization
+      ansible.builtin.debug:
+        var: ssh_sftp_state_before.stdout_lines
+
     - name: Normalize SSH SFTP subsystem before fact gathering
       ansible.builtin.raw: |
         set -e
@@ -20,9 +35,27 @@
         fi
         sed -i '/^[#[:space:]]*Subsystem[[:space:]]\+sftp[[:space:]].*/d' /etc/ssh/sshd_config
         echo 'Subsystem sftp /usr/libexec/openssh/sftp-server' >> /etc/ssh/sshd_config
+        if [ -x /usr/libexec/openssh/sftp-server ] && [ ! -e /usr/lib/sftp-server ]; then
+          ln -s /usr/libexec/openssh/sftp-server /usr/lib/sftp-server
+        fi
         sshd -t
         systemctl reload sshd || systemctl restart sshd
       changed_when: false
+
+    - name: Capture SSH SFTP state after normalization
+      ansible.builtin.raw: |
+        echo '=== AFTER: subsystem lines ==='
+        grep -Rin '^[#[:space:]]*Subsystem[[:space:]]\+sftp' /etc/ssh 2>/dev/null || true
+        echo '=== AFTER: sshd -T subsystem ==='
+        sshd -T 2>/dev/null | grep '^subsystem' || true
+        echo '=== AFTER: sftp binaries ==='
+        ls -l /usr/libexec/openssh/sftp-server /usr/lib/sftp-server 2>&1 || true
+      register: ssh_sftp_state_after
+      changed_when: false
+
+    - name: Print SSH SFTP state after normalization
+      ansible.builtin.debug:
+        var: ssh_sftp_state_after.stdout_lines
 
     - name: Reset SSH connection after normalizing the SFTP subsystem
       ansible.builtin.meta: reset_connection
