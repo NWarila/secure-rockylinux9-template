@@ -47,7 +47,7 @@ jobs:
           fetch-depth: 1
           path: proxmox-packer-framework
           persist-credentials: false
-          ref: 0837cc54759367e88862805212daeca84a866ecf
+          ref: 46680ec9a4d1361a4cde7b0ae3e5fc1a5a3f01a2
           repository: NWarila/Proxmox-Packer-Framework
 
       - name: Checkout Ansible Framework Repository
