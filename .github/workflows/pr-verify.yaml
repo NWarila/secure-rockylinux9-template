@@ -32,7 +32,10 @@ jobs:
       PKR_VAR_deploy_user_name: builder
       PKR_VAR_deploy_user_password: C0mpl1antValidationPassword!
       PKR_VAR_deploy_user_password_hash: $6$rounds=10000$abcdefghijklmnop$qY5tv1wGXcN0n4DZV1W6D8qA8g9lM2rjL9Y6G7sQ8dH5nD1vS2z2M4rB0Xj3tN1uQwF4L7gD1qK8mF0bN2nU1
-      PKR_VAR_deploy_user_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyMockValidationKeyOnly1234567890abcdefghijklmnopqrstuvwxyz builder@example
+      PKR_VAR_deploy_user_key: >-
+        ssh-rsa
+        AAAAB3NzaC1yc2EAAAADAQABAAABAQCyMockValidationKeyOnly1234567890abcdefghijklmnopqrstuvwxyz
+        builder@example
     steps:
       - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -77,7 +80,9 @@ jobs:
             "${packer_base_url}/packer_${PACKER_VERSION}_SHA256SUMS" \
             -o /tmp/packer_SHA256SUMS
 
-          grep -E "^${PACKER_ZIP_SHA256}[[:space:]]+packer_${PACKER_VERSION}_linux_amd64\\.zip$" /tmp/packer_SHA256SUMS >/dev/null
+          grep -E \
+            "^${PACKER_ZIP_SHA256}[[:space:]]+packer_${PACKER_VERSION}_linux_amd64\\.zip$" \
+            /tmp/packer_SHA256SUMS >/dev/null
           printf '%s  %s\n' "${PACKER_ZIP_SHA256}" /tmp/packer.zip | sha256sum -c -
 
           rm -rf /tmp/packer-bin

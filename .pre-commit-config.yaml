@@ -16,12 +16,14 @@ repos:
         args: [--maxkb=1024]
       - id: check-case-conflict
       - id: check-json
+        exclude: '^\.vscode/.*\.json$'
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-yaml
         args: [--allow-multiple-documents, --unsafe]
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: '^CODE_OF_CONDUCT\.md$'
       - id: mixed-line-ending
         args: [--fix=lf]
       - id: trailing-whitespace
@@ -56,6 +58,7 @@ repos:
     hooks:
       - id: markdownlint
         args: [--config, .config/.markdownlint.json]
+        files: '^(README\.md|CONTRIBUTING\.md|SECURITY\.md)$'
 
   # --- [ Conventional Commits ] ------------------------------------------------------------- #
   - repo: https://github.com/compilerla/conventional-pre-commit

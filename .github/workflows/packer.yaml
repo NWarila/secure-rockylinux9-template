@@ -214,8 +214,13 @@ jobs:
             exit 1
           fi
 
-          printf '%s  %s\n' "${SECURE_PACKER_BOOTSTRAPPER_RELEASE_SHA256}" "${bootstrap_dir}/secure-packer-bootstrapper.sh" | sha256sum -c -
-          python3 - "${bootstrap_dir}/secure-packer-bootstrapper.release.json" "${SECURE_PACKER_BOOTSTRAPPER_RELEASE_TAG}" "${SECURE_PACKER_BOOTSTRAPPER_RELEASE_SHA256}" <<'PY'
+          printf '%s  %s\n' \
+            "${SECURE_PACKER_BOOTSTRAPPER_RELEASE_SHA256}" \
+            "${bootstrap_dir}/secure-packer-bootstrapper.sh" | sha256sum -c -
+          python3 - \
+            "${bootstrap_dir}/secure-packer-bootstrapper.release.json" \
+            "${SECURE_PACKER_BOOTSTRAPPER_RELEASE_TAG}" \
+            "${SECURE_PACKER_BOOTSTRAPPER_RELEASE_SHA256}" <<'PY'
           import json
           import pathlib
           import sys
@@ -229,7 +234,10 @@ jobs:
               raise SystemExit("secure-packer-bootstrapper metadata tag does not match the tracked reviewed tag.")
 
           if metadata.get("bundle_sha256", "").lower() != expected_sha256.lower():
-              raise SystemExit("secure-packer-bootstrapper metadata bundle_sha256 does not match the tracked reviewed SHA256.")
+              raise SystemExit(
+                  "secure-packer-bootstrapper metadata bundle_sha256 "
+                  "does not match the tracked reviewed SHA256."
+              )
           PY
           chmod 700 "${bootstrap_dir}/secure-packer-bootstrapper.sh"
 
