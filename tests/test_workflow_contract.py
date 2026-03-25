@@ -73,7 +73,10 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertNotIn("pull_request", workflow["on"])
         self.assertIn("workflow_dispatch", workflow["on"])
         self.assertEqual(workflow["on"]["push"]["branches"], ["main"])
+        self.assertIn("pin-preflight", workflow["jobs"])
+
         packer_job = workflow["jobs"]["packer"]
+        self.assertEqual(packer_job["needs"], "pin-preflight")
         self.assertEqual(packer_job["environment"], "packer-build")
         self.assertIn("self-hosted", packer_job["runs-on"])
 

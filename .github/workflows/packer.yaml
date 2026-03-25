@@ -17,8 +17,68 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  pin-preflight:
+    name: Pin Readiness Preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      pin_ready: ${{ steps.pin-status.outputs.pin_ready }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
+
+      - name: Evaluate tracked secure-packer-bootstrapper Pin
+        id: pin-status
+        run: |
+          set -euo pipefail
+
+          pin_file="${GITHUB_WORKSPACE}/.github/pins/secure-packer-bootstrapper.env"
+          if [[ ! -f "${pin_file}" ]]; then
+            echo "pin_ready=false" >> "${GITHUB_OUTPUT}"
+            echo "::notice title=Bootstrapper pin pending::Skipping privileged build because ${pin_file} does not exist."
+            exit 0
+          fi
+
+          set -a
+          # shellcheck source=/dev/null
+          . "${pin_file}"
+          set +a
+
+          required_variables=(
+            "SECURE_PACKER_BOOTSTRAPPER_RELEASE_REPO"
+            "SECURE_PACKER_BOOTSTRAPPER_RELEASE_TAG"
+            "SECURE_PACKER_BOOTSTRAPPER_RELEASE_URL"
+            "SECURE_PACKER_BOOTSTRAPPER_RELEASE_SHA256"
+            "SECURE_PACKER_BOOTSTRAPPER_RELEASE_SHA256_URL"
+            "SECURE_PACKER_BOOTSTRAPPER_RELEASE_METADATA_URL"
+          )
+          missing_variables=()
+
+          for variable_name in "${required_variables[@]}"; do
+            variable_value="${!variable_name:-}"
+            if [[ -z "${variable_value//[[:space:]]/}" ]]; then
+              missing_variables+=("${variable_name}")
+            fi
+          done
+
+          if [[ "${#missing_variables[@]}" -gt 0 ]]; then
+            echo "pin_ready=false" >> "${GITHUB_OUTPUT}"
+            printf -v missing_csv '%s, ' "${missing_variables[@]}"
+            missing_csv="${missing_csv%, }"
+            echo "::notice title=Bootstrapper pin pending::Skipping privileged build until a reviewed secure-packer-bootstrapper release populates: ${missing_csv}."
+            exit 0
+          fi
+
+          echo "pin_ready=true" >> "${GITHUB_OUTPUT}"
+
   packer:
-    if: github.ref == 'refs/heads/main'
+    needs: pin-preflight
+    if: github.ref == 'refs/heads/main' && needs.pin-preflight.outputs.pin_ready == 'true'
     runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 120
     environment: packer-build
