@@ -135,7 +135,8 @@ jobs:
             exit 0
           fi
 
-          pr_body="Refreshes the tracked secure-packer-bootstrapper release URLs and SHA256 to the latest published release."
+          pr_body="Refreshes the tracked secure-packer-bootstrapper release URLs and SHA256 "
+          pr_body+="to the latest published release."
 
           gh pr create \
             --base main \
