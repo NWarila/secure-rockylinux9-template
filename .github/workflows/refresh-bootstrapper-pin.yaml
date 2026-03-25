@@ -56,6 +56,7 @@ jobs:
       - name: Commit refreshed Pin to PR Branch
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           set -euo pipefail
 
@@ -70,7 +71,7 @@ jobs:
           git commit -m "chore(ci): refresh secure-packer-bootstrapper pin"
 
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
+          git push origin "HEAD:${PR_HEAD_REF}"
 
   open-refresh-pr:
     if: github.event_name != 'pull_request_target'
