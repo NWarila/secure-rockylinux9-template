@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.1.0](https://github.com/NWarila/secure-rockylinux9-template/compare/v1.0.0...v1.1.0) (2026-03-25)
+
+
+### Features
+
+* **packer:** consolidate consumer inputs and harden test workflow ([015531b](https://github.com/NWarila/secure-rockylinux9-template/commit/015531b91bda1aded9ae8248b1570d2a136b7c30))
+
+
+### Bug Fixes
+
+* **ci:** pin latest proxmox-packer-framework ([1890425](https://github.com/NWarila/secure-rockylinux9-template/commit/18904250e567183c0690bb86ec0f5b3a0e33717d))
+* **ci:** pin proxmox-packer-framework communicator fix ([89816bd](https://github.com/NWarila/secure-rockylinux9-template/commit/89816bd5ead5a1b4836427726d21fae369f43362))
+* **ci:** pin proxmox-packer-framework variable type fix ([b1692bc](https://github.com/NWarila/secure-rockylinux9-template/commit/b1692bccbb1fed151e898b0c9077d0ac4f0f1e97))
+* **ci:** restore workflow stability and pin external actions ([f6d11e2](https://github.com/NWarila/secure-rockylinux9-template/commit/f6d11e2b1bd200aa09ae58abf9794ff401755617))
+* **packer:** align public key contract and pin latest framework ([cf650be](https://github.com/NWarila/secure-rockylinux9-template/commit/cf650bea6f33b5ec5d6eb7c390b5ac5e7ad344e7))
+* **packer:** bootstrap ssh sftp before ansible fact gathering ([62a8a96](https://github.com/NWarila/secure-rockylinux9-template/commit/62a8a96f4541402ccbbe5f86560dbf2ab42bd4cc))
+* **packer:** capture ssh sftp bootstrap diagnostics ([1091491](https://github.com/NWarila/secure-rockylinux9-template/commit/1091491ce6746e3f760faba7baf29e55c63c51c5))
+* **packer:** force sftp and probe remote tmp access ([6b55142](https://github.com/NWarila/secure-rockylinux9-template/commit/6b551427014fd1553378d3946731a650663562eb))
+* **packer:** restore rocky linux sftp subsystem in kickstart ([cce0f3f](https://github.com/NWarila/secure-rockylinux9-template/commit/cce0f3ffd7217e977c95f491ab0abe086c19ed8b))
+* **packer:** restore rocky linux sftp subsystem in kickstart ([9a42ea2](https://github.com/NWarila/secure-rockylinux9-template/commit/9a42ea29066a5a9dc40e1e98f5fbd32e1c5243a8))
+* **packer:** restore rocky linux sftp subsystem in kickstart ([cd5adc6](https://github.com/NWarila/secure-rockylinux9-template/commit/cd5adc646585bb056241a4411397e5cd8825e7d6))
+* **packer:** use dedicated remote tmp for ansible bootstrap ([1584e74](https://github.com/NWarila/secure-rockylinux9-template/commit/1584e74653e1c9e4c334df120586073dc90fce9e))
+
 ## 1.0.0 (2026-03-10)
 
 
